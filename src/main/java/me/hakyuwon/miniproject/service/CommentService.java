@@ -1,5 +1,9 @@
-package me.hakyuwon.miniproject.domain;
+package me.hakyuwon.miniproject.service;
 
+import me.hakyuwon.miniproject.domain.Board;
+import me.hakyuwon.miniproject.domain.Comment;
+import me.hakyuwon.miniproject.repository.BoardRepository;
+import me.hakyuwon.miniproject.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

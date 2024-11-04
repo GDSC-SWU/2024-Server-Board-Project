@@ -15,7 +15,7 @@ public class BoardResponse {
     private LocalDateTime createdAt;
 
     public BoardResponse (Board board) {
-        this.post_id=board.getPost_id();
+        this.post_id=board.getPostId();
         this.title=board.getTitle();
         this.content=board.getContent();
         this.createdAt=board.getCreatedAt();
