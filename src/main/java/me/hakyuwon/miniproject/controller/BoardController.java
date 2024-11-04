@@ -10,7 +10,13 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/posts")
 public class BoardController {
     private final BoardService boardService;
+
+    //게시글 생성
+
+
+
 }
 
