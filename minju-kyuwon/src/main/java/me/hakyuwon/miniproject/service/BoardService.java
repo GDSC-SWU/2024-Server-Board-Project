@@ -1,6 +1,8 @@
 package me.hakyuwon.miniproject.service;
 import lombok.RequiredArgsConstructor;
 import me.hakyuwon.miniproject.domain.Board;
+import me.hakyuwon.miniproject.dto.BoardRequest;
+import me.hakyuwon.miniproject.dto.BoardResponse;
 import me.hakyuwon.miniproject.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +17,22 @@ public class BoardService {
 
     // 게시글 생성
     @Transactional
-    public Board createBoard(String title, String content, String imageUrl) {
+    public Board createBoard(BoardRequest boardRequest) {
         Board board = Board.builder()
-                .title(title)
-                .content(content)
-                .imageUrl(imageUrl)
+                .title(boardRequest.getTitle())
+                .content(boardRequest.getContent())
                 .build();
         return boardRepository.save(board);
     }
 
-    // 게시글 검색 및 조회
+    // 게시글 조회
     @Transactional(readOnly = true)
-    public List<Board> getBoards(Long search) {
+    public List<Board> getBoards() {
+        return boardRepository.findAll().stream().toList();
+    }
+    // 게시글 검색
+    @Transactional(readOnly = true)
+    public List<Board> getPosts(Long search) {
         return boardRepository.findByPostId(search);
     }
 

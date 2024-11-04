@@ -14,11 +14,11 @@ public class BoardResponse {
     private String content;
     private LocalDateTime createdAt;
 
+
     public BoardResponse (Board board) {
         this.post_id=board.getPostId();
         this.title=board.getTitle();
         this.content=board.getContent();
         this.createdAt=board.getCreatedAt();
-
     }
 }
