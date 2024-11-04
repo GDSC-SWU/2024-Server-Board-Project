@@ -16,7 +16,7 @@ public class Article {
     @Id //기본키
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", updatable = false)
-    private Long id;
+    private Long postId;
 
     @Column(name = "title", nullable = false)
     private String title;

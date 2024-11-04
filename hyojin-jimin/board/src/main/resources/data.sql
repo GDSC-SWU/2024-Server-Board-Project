@@ -1,0 +1,3 @@
+INSERT INTO article (title, content, image_path, created_at, updated_at) VALUES ('제목 1', '내용 1', 'image1.jpg', '2024-11-03 10:00:00', '2024-11-03 10:00:00')
+INSERT INTO article (title, content, image_path, created_at, updated_at) VALUES ('제목 2', '내용 2', 'image2.jpg', '2024-11-04 10:00:00', '2024-11-05 10:00:00')
+INSERT INTO article (title, content, image_path, created_at, updated_at) VALUES ('제목 3', '내용 3', 'image3.jpg', '2024-11-04 12:00:00', '2024-11-04 12:00:00')
