@@ -1,5 +1,9 @@
-package me.hakyuwon.miniproject.domain;
+package me.hakyuwon.miniproject.service;
 
+import me.hakyuwon.miniproject.domain.Board;
+import me.hakyuwon.miniproject.domain.Comment;
+import me.hakyuwon.miniproject.repository.BlogRepository;
+import me.hakyuwon.miniproject.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +15,12 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private BoardRepository boardRepository;  // BoardRepository 추가
+    private BlogRepository blogRepository;  // blogRepository 추가
 
     @Transactional
     public Comment addComment(Long postId, String content) {
         // postId에 해당하는 Board를 찾아와서 댓글과 연결
-        Board board = boardRepository.findById(postId)
+        Board board = blogRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
         // 댓글 생성 및 게시글과 연결

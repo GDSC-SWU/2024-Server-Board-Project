@@ -1,7 +1,6 @@
 package me.hakyuwon.miniproject.service;
 import lombok.RequiredArgsConstructor;
 import me.hakyuwon.miniproject.domain.Board;
-import me.hakyuwon.miniproject.dto.BoardRequest;
 import me.hakyuwon.miniproject.repository.BlogRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
