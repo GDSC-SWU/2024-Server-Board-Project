@@ -40,4 +40,11 @@ public class BoardApiController {
         return ResponseEntity.ok()
                 .body(new ArticleResponse(article));
     }
+
+    @DeleteMapping("/api/posts/{postId}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable long postId) {
+        boardService.delete(postId);
+        return ResponseEntity.ok()
+                .build();
+    }
 }

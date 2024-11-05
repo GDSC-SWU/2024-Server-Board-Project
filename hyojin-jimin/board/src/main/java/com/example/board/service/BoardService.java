@@ -30,4 +30,9 @@ public class BoardService {
         return boardRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
     }
+
+    //게시글 삭제
+    public void delete(long postId) {
+        boardRepository.deleteById(postId);
+    }
 }
