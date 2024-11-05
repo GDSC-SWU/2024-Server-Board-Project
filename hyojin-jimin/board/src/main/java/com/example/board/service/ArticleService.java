@@ -1,6 +1,6 @@
 package com.example.board.service;
 
-import com.example.board.repository.BoardRepository;
+import com.example.board.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import com.example.board.domain.Article;
 import com.example.board.dto.AddArticleRequest;
@@ -12,36 +12,36 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class BoardService {
+public class ArticleService {
 
-    private final BoardRepository boardRepository;
+    private final ArticleRepository articleRepository;
 
     //게시글 추가
     public Article save(AddArticleRequest request) {
-        return boardRepository.save(request.toEntity());
+        return articleRepository.save(request.toEntity());
     }
 
     //게시글 목록 조회
     public List<Article> findAll() {
         //최신순으로 조회
-        return boardRepository.findAllByOrderByCreatedAtDesc();
+        return articleRepository.findAllByOrderByCreatedAtDesc();
     }
 
     //게시글 조회
     public Article findById(long postId) {
-        return boardRepository.findById(postId)
+        return articleRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
     }
 
     //게시글 삭제
     public void delete(long postId) {
-        boardRepository.deleteById(postId);
+        articleRepository.deleteById(postId);
     }
 
     //게시글 수정
     @Transactional
     public Article update(long postId, UpdateArticleRequest request) {
-        Article article = boardRepository.findById(postId)
+        Article article = articleRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
         article.update(request.getTitle(), request.getContent(), request.getImagePath());
         return article;

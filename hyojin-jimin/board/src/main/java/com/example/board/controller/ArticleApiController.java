@@ -2,7 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.dto.ArticleResponse;
 import com.example.board.dto.UpdateArticleRequest;
-import com.example.board.service.BoardService;
+import com.example.board.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import com.example.board.domain.Article;
 import com.example.board.dto.AddArticleRequest;
@@ -14,20 +14,20 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class BoardApiController {
+public class ArticleApiController {
 
-    private final BoardService boardService;
+    private final ArticleService articleService;
 
     @PostMapping("/api/posts")
     public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request) {
-        Article savedArticle = boardService.save(request);
+        Article savedArticle = articleService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedArticle);
     }
 
     @GetMapping("/api/posts")
     public ResponseEntity<List<ArticleResponse>> findAllArticles() {
-        List<ArticleResponse> articles = boardService.findAll()
+        List<ArticleResponse> articles = articleService.findAll()
                 .stream()
                 .map(ArticleResponse::new)
                 .toList();
@@ -37,21 +37,21 @@ public class BoardApiController {
 
     @GetMapping("/api/posts/{postId}")
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long postId) {
-        Article article = boardService.findById(postId);
+        Article article = articleService.findById(postId);
         return ResponseEntity.ok()
                 .body(new ArticleResponse(article));
     }
 
     @DeleteMapping("/api/posts/{postId}")
     public ResponseEntity<Void> deleteArticle(@PathVariable long postId) {
-        boardService.delete(postId);
+        articleService.delete(postId);
         return ResponseEntity.ok()
                 .build();
     }
 
     @PutMapping("/api/posts/{postId}")
     public ResponseEntity<Article> updateArticle(@PathVariable long postId, @RequestBody UpdateArticleRequest request) {
-        Article updatedArticle = boardService.update(postId, request);
+        Article updatedArticle = articleService.update(postId, request);
         return ResponseEntity.ok()
                 .body(updatedArticle);
     }

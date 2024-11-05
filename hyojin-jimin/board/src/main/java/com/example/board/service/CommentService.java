@@ -3,9 +3,8 @@ package com.example.board.service;
 import com.example.board.domain.Article;
 import com.example.board.domain.Comment;
 import com.example.board.domain.User;
-import com.example.board.dto.ArticleResponse;
 import com.example.board.dto.CommentDto;
-import com.example.board.repository.BoardRepository;
+import com.example.board.repository.ArticleRepository;
 import com.example.board.repository.CommentRepository;
 import com.example.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +18,12 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final BoardRepository boardRepository;
+    private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
     // 댓글 작성
     public CommentDto.CommentResponseDto save(CommentDto.CommentRequestDto request, Long userId, Long articleId) {
-        Article article = boardRepository.findById(articleId)
+        Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
         User user = userRepository.findById(userId)
@@ -49,7 +48,7 @@ public class CommentService {
 
     // 댓글 조회
     public List<CommentDto.CommentResponseDto> findComments(Long articleId) {
-        Article article = boardRepository.findById(articleId)
+        Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
         // 게시글의 댓글들 가져오기
