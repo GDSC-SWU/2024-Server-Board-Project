@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.dto.ArticleResponse;
+import com.example.board.dto.UpdateArticleRequest;
 import com.example.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import com.example.board.domain.Article;
@@ -46,5 +47,12 @@ public class BoardApiController {
         boardService.delete(postId);
         return ResponseEntity.ok()
                 .build();
+    }
+
+    @PutMapping("/api/posts/{postId}")
+    public ResponseEntity<Article> updateArticle(@PathVariable long postId, @RequestBody UpdateArticleRequest request) {
+        Article updatedArticle = boardService.update(postId, request);
+        return ResponseEntity.ok()
+                .body(updatedArticle);
     }
 }

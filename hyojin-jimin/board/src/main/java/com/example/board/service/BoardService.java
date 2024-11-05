@@ -4,7 +4,9 @@ import com.example.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import com.example.board.domain.Article;
 import com.example.board.dto.AddArticleRequest;
+import com.example.board.dto.UpdateArticleRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,5 +36,14 @@ public class BoardService {
     //게시글 삭제
     public void delete(long postId) {
         boardRepository.deleteById(postId);
+    }
+
+    //게시글 수정
+    @Transactional
+    public Article update(long postId, UpdateArticleRequest request) {
+        Article article = boardRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
+        article.update(request.getTitle(), request.getContent(), request.getImagePath());
+        return article;
     }
 }
