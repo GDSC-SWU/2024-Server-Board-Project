@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity //엔티티
 @Getter //롬복
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Article {
+public class Article extends BaseEntity{
 
     @Id //기본키
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,23 +27,9 @@ public class Article {
     @Column(name = "image_path") //이미지
     private String imagePath;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist //저장 전 실행
-    private void onCreate() { //엔티티가 데이터베이스에 처음 저장될 때 실행
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
-
-    @PreUpdate //수정 전 실행
-    private void onUpdate() { //내용이 수정되어 다시 저장될 때
-        this.updatedAt = LocalDateTime.now();
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")  // user 매핑
+    private User user;
 
     @Builder
     public Article(String title, String content, String imagePath) {
