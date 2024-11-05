@@ -27,15 +27,20 @@ public class User extends BaseEntity{
 
     private String nickname;
 
-    private int postCount;
+    @Column(nullable = true)
+    private Integer postCount;
 
-    private int commentCount;
+    @Column(nullable = true)
+    private Integer commentCount;
 
-    private int likeCount;
+    @Column(nullable = true)
+    private Integer likeCount;
 
+    @Column(nullable = true)
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
+    @Column(nullable = true)
     private String image;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
