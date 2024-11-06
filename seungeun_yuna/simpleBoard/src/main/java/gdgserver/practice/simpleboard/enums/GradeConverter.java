@@ -1,14 +1,14 @@
-package gdgserver.practice.simpleboard.domain;
+package gdgserver.practice.simpleboard.enums;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter
-public class UserGradeConverter implements AttributeConverter<UserGrade, String> {
+public class GradeConverter implements AttributeConverter<Grade, String> {
     
     // db에 저장
     @Override
-    public String convertToDatabaseColumn(UserGrade attribute) {
+    public String convertToDatabaseColumn(Grade attribute) {
         if(attribute == null) {
             return null;
         }
@@ -16,10 +16,10 @@ public class UserGradeConverter implements AttributeConverter<UserGrade, String>
     }
     // Entity로 반환
     @Override
-    public UserGrade convertToEntityAttribute(String dbData) {
+    public Grade convertToEntityAttribute(String dbData) {
         if(dbData == null) {
             return null;
         }
-        return UserGrade.enumOf(dbData);
+        return Grade.enumOf(dbData);
     }
 }
