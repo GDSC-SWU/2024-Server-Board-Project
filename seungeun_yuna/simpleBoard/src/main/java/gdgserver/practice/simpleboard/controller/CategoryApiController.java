@@ -15,7 +15,7 @@ public class CategoryApiController {
     private final CategoryService categoryService;
 
     // 게시판 조회
-    @GetMapping("/categories")
+    @GetMapping("/api/categories")
     public ResponseEntity<List<CategoryDto.CategoryResponseDto>> findAll(){
         List<CategoryDto.CategoryResponseDto> responseList = categoryService.findAll();
 

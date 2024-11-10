@@ -8,18 +8,18 @@ import java.util.Arrays;
 @Getter
 @AllArgsConstructor
 public enum Grade {
-    ADMIN("0", "ADMIN"),
-    D("10", "userGrade_D"),
-    C("20", "userGrade_C"),
-    B("30", "userGrade_B"),
-    A("40", "userGrade_A");
+    ADMIN(0L, "ADMIN"),
+    D(10L, "userGrade_D"),
+    C(20L, "userGrade_C"),
+    B(30L, "userGrade_B"),
+    A(40L, "userGrade_A");
 
-    private final String gradeCode;
+    private final Long gradeId;
     private final String gradeName;
 
-    public static Grade enumOf(String gradeCode) {
+    public static Grade enumOf(Long gradeId) {
         return Arrays.stream(Grade.values())
-                .filter(t->t.getGradeCode().equals(gradeCode))
+                .filter(t->t.getGradeId().equals(gradeId))
                 .findAny().orElse(null);
     }
 }

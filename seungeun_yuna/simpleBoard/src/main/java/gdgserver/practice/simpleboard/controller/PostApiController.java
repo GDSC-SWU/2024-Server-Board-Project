@@ -15,44 +15,44 @@ public class PostApiController {
     private final PostService postService;
 
     // 게시글 작성
-    @PostMapping("/categories/{category_id}/posts")
-    public ResponseEntity<PostDto.PostResponseDto> addPost(@PathVariable Long category_id,
+    @PostMapping("/api/categories/{categoryId}/posts")
+    public ResponseEntity<PostDto.PostResponseDto> addPost(@PathVariable Long categoryId,
                                                            @RequestBody PostDto.PostRequestDto request){
-        PostDto.PostResponseDto response = postService.save(request, 1L,category_id);
+        PostDto.PostResponseDto response = postService.save(request, 1L, categoryId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     // 카테고리 내 게시글 전체 조회
-    @GetMapping("/categories/{category_id}/posts")
-    public ResponseEntity<List<PostDto.PostResponseDto>> findPostsInCategory(@PathVariable Long category_id){
-        List<PostDto.PostResponseDto> postResponseList = postService.findPostsByCategory(category_id);
+    @GetMapping("/api/categories/{categoryId}/posts")
+    public ResponseEntity<List<PostDto.PostResponseDto>> findPostsInCategory(@PathVariable Long categoryId){
+        List<PostDto.PostResponseDto> postResponseList = postService.findPostsByCategory(categoryId);
 
         return ResponseEntity.ok()
                 .body(postResponseList);
     }
 
     // 게시글 내용 조회
-    @GetMapping("/posts/{id}")
-    public ResponseEntity<PostDto.PostResponseDto> findPost(@PathVariable Long id){
-        PostDto.PostResponseDto response = postService.findPostById(id);
+    @GetMapping("/api/posts/{postId}")
+    public ResponseEntity<PostDto.PostResponseDto> findPost(@PathVariable Long postId){
+        PostDto.PostResponseDto response = postService.findPostById(postId);
 
         return ResponseEntity.ok().body(response);
     }
 
     // 게시글 삭제
-    @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id){
-        postService.delete(id);
+    @DeleteMapping("/api/posts/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId){
+        postService.delete(postId);
 
         return ResponseEntity.ok().build();
     }
 
     // 게시글 수정
-    @PutMapping("/posts/{id}")
-    public ResponseEntity<PostDto.PostResponseDto> updatePost(@PathVariable Long id,
+    @PutMapping("/api/posts/{postId}")
+    public ResponseEntity<PostDto.PostResponseDto> updatePost(@PathVariable Long postId,
                                                               @RequestBody PostDto.PostRequestDto request){
-        PostDto.PostResponseDto response = postService.update(id, request);
+        PostDto.PostResponseDto response = postService.update(postId, request);
 
         return ResponseEntity.ok().body(response);
     }

@@ -1,5 +1,6 @@
 package gdgserver.practice.simpleboard.service;
 
+import gdgserver.practice.simpleboard.converter.PostConverter;
 import gdgserver.practice.simpleboard.domain.Category;
 import gdgserver.practice.simpleboard.domain.Post;
 import gdgserver.practice.simpleboard.domain.User;
@@ -21,6 +22,8 @@ public class PostService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
+    private final PostConverter postConverter;
+
     // 게시글 작성
     public PostDto.PostResponseDto save(PostDto.PostRequestDto request, Long userId, Long categoryId) {
 
@@ -31,7 +34,7 @@ public class PostService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(()-> new IllegalArgumentException("Category not found: " + categoryId));
 
-        // requestDto -> Post 객체로 변환
+        // requestDto -> Post Entity로 변환
         Post post = Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -42,15 +45,8 @@ public class PostService {
         // post 저장
         postRepository.save(post);
 
-        // Post 객체 -> responseDto 로 변환해서 반환
-        return PostDto.PostResponseDto.builder()
-                .id(post.getId())
-                .userId(post.getUser().getId())
-                .userName(post.getUser().getNickname())
-                .categoryId(post.getCategory().getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .build();
+        // Post -> responseDto 변환해서 반환
+        return postConverter.toDto(post);
     }
 
     // 카테고리 내 게시글 목록 조회
@@ -63,14 +59,7 @@ public class PostService {
 
         // stream() 사용 -> responseDto 리스트로 변환해서 반환
         return postList.stream()
-                .map(post -> PostDto.PostResponseDto.builder()
-                        .id(post.getId())
-                        .userId(post.getUser().getId())
-                        .userName(post.getUser().getNickname())
-                        .categoryId(post.getCategory().getId())
-                        .title(post.getTitle())
-                        .content(post.getContent())
-                        .build())
+                .map(postConverter::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -80,15 +69,8 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found: " + id));
 
-        // Post 객체 -> responseDto 로 변환해서 반환
-        return PostDto.PostResponseDto.builder()
-                .id(post.getId())
-                .userId(post.getUser().getId())
-                .userName(post.getUser().getNickname())
-                .categoryId(post.getCategory().getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .build();
+        // Post -> responseDto 로 변환해서 반환
+        return postConverter.toDto(post);
     }
 
     // 게시글 삭제
@@ -105,14 +87,7 @@ public class PostService {
 
         post.update(request.getTitle(), request.getContent()); // request로 받은 값으로 게시글 수정
 
-        return PostDto.PostResponseDto.builder()
-                .id(post.getId())
-                .userId(post.getUser().getId())
-                .userName(post.getUser().getNickname())
-                .categoryId(post.getCategory().getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .build();
+        return postConverter.toDto(post);
     }
 
 }
