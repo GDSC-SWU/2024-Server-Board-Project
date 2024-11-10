@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
-public enum Grade {
+public enum GradeEnum {
     ADMIN(0L, "ADMIN"),
     D(10L, "userGrade_D"),
     C(20L, "userGrade_C"),
@@ -17,8 +17,8 @@ public enum Grade {
     private final Long gradeId;
     private final String gradeName;
 
-    public static Grade enumOf(Long gradeId) {
-        return Arrays.stream(Grade.values())
+    public static GradeEnum enumOf(Long gradeId) {
+        return Arrays.stream(GradeEnum.values())
                 .filter(t->t.getGradeId().equals(gradeId))
                 .findAny().orElse(null);
     }

@@ -1,14 +1,15 @@
-package gdgserver.practice.simpleboard.enums;
+package gdgserver.practice.simpleboard.converter;
 
+import gdgserver.practice.simpleboard.enums.GradeEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter
-public class GradeConverter implements AttributeConverter<Grade, Long> {
+public class GradeConverter implements AttributeConverter<GradeEnum, Long> {
     
     // db에 저장
     @Override
-    public Long convertToDatabaseColumn(Grade attribute) {
+    public Long convertToDatabaseColumn(GradeEnum attribute) {
         if(attribute == null) {
             return null;
         }
@@ -16,10 +17,10 @@ public class GradeConverter implements AttributeConverter<Grade, Long> {
     }
     // Entity로 반환
     @Override
-    public Grade convertToEntityAttribute(Long dbData) {
+    public GradeEnum convertToEntityAttribute(Long dbData) {
         if(dbData == null) {
             return null;
         }
-        return Grade.enumOf(dbData);
+        return GradeEnum.enumOf(dbData);
     }
 }

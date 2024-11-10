@@ -1,7 +1,7 @@
 package gdgserver.practice.simpleboard.domain;
 
-import gdgserver.practice.simpleboard.enums.Grade;
-import gdgserver.practice.simpleboard.enums.GradeConverter;
+import gdgserver.practice.simpleboard.enums.GradeEnum;
+import gdgserver.practice.simpleboard.converter.GradeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class Category {
 
     @Convert(converter = GradeConverter.class)
     @Column(name = "access_level")
-    private Grade accessLevel;
+    private GradeEnum accessLevel;
 
     // 연관관계 매핑
     @OneToMany(mappedBy = "category")

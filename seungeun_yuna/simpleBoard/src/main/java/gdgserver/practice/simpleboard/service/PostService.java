@@ -75,6 +75,8 @@ public class PostService {
 
     // 게시글 삭제
     public void delete(Long id) {
+        // 해당 id 게시글 존재하는지 찾기
+        postRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Post not found: " + id));
         postRepository.deleteById(id);
     }
 

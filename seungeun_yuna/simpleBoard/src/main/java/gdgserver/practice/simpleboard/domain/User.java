@@ -1,7 +1,7 @@
 package gdgserver.practice.simpleboard.domain;
 
-import gdgserver.practice.simpleboard.enums.Grade;
-import gdgserver.practice.simpleboard.enums.GradeConverter;
+import gdgserver.practice.simpleboard.enums.GradeEnum;
+import gdgserver.practice.simpleboard.converter.GradeConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class User {
 
     @Convert(converter = GradeConverter.class)
     @Column(name = "grade", nullable = false)
-    private Grade grade;
+    private GradeEnum grade;
 
     @Column(name = "profile_img")
     private String imgUrl;
