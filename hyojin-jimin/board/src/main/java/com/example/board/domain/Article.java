@@ -15,8 +15,8 @@ public class Article extends BaseEntity{
 
     @Id //기본키
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id", updatable = false)
-    private Long postId;
+    @Column(name = "article_id", updatable = false)
+    private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;
