@@ -41,7 +41,7 @@ public class CommentService {
         return CommentDto.CommentResponseDto.builder()
                 .id(comment.getId())
                 .userId(comment.getUser().getId())
-                .articleId(comment.getArticle().getPostId())
+                .articleId(comment.getArticle().getId())
                 .content(comment.getContent())
                 .build();
     }
@@ -59,7 +59,7 @@ public class CommentService {
                 .map(comment -> CommentDto.CommentResponseDto.builder()
                         .id(comment.getId())
                         .userId(comment.getUser().getId())
-                        .articleId(comment.getArticle().getPostId())
+                        .articleId(comment.getArticle().getId())
                         .content(comment.getContent())
                         .build())
                 .collect(Collectors.toList());

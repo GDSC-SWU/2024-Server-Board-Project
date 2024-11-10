@@ -34,7 +34,7 @@ public class LikeService {
 
         return likeDto.LikeResponseDto.builder()
                 .id(like.getId())
-                .articleId(like.getArticle().getPostId())
+                .articleId(like.getArticle().getId())
                 .userId(like.getUser().getId())
                 .build();
     }
