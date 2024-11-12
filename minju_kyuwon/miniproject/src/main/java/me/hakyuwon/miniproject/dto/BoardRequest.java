@@ -14,11 +14,13 @@ public class BoardRequest {
 
     private String title;
     private String content;
+    private String imageUrl;
 
-    public Board toEntity(){
+    public Board toEntity(){ //생성자를 사용해 객체 생성
         return Board.builder()
                 .title(title)
                 .content(content)
+                .imageUrl(imageUrl)
                 .build();
     }
 

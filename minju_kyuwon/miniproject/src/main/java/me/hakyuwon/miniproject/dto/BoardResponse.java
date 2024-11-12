@@ -7,18 +7,19 @@ import me.hakyuwon.miniproject.domain.Board;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
 public class BoardResponse {
-    private Long post_id;
-    private String title;
-    private String content;
-    private LocalDateTime createdAt;
+    private final String title;
+    private final String content;
+    private final String imagePath;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
 
     public BoardResponse (Board board) {
-        this.post_id=board.getPostId();
         this.title=board.getTitle();
         this.content=board.getContent();
+        this.imagePath=board.getImageUrl();
         this.createdAt=board.getCreatedAt();
+        this.updatedAt=board.getUpdatedAt();
     }
 }

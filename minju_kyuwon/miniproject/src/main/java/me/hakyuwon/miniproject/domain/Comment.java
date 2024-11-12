@@ -1,66 +1,41 @@
 package me.hakyuwon.miniproject.domain;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)  // Auditing 기능 활성화
-public class Comment {
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Comment extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id", updatable = false)
     private Long commentId;
 
+    @Column(name = "content", nullable = false)
+    private String content;
+
     @ManyToOne(fetch = FetchType.LAZY)  // 다대일 관계 설정
     @JoinColumn(name = "post_id", nullable = false)  // Comment 엔티티가 Board와 연결됨을 나타냄
     private Board board;
 
-    @Column(name = "content", nullable = false)
-    private String content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @CreatedDate
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;  // 댓글 생성 시간
+    @ManyToOne(fetch = FetchType.LAZY) // 부모 댓글을 참조
+    @JoinColumn(name = "parent_id")  // 부모 댓글을 나타내기 위해 외래 키 이름을 변경
+    private Comment parent;
 
-    // 생성자
-    public Comment() {}
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)  // 대댓글 리스트
+    private List<Comment> replies = new ArrayList<>();
 
-    public Comment(Board board, String content) {
-        this.board = board;
-        this.content = content;
-    }
-
-    // getter와 setter
-    public Long getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 }
 

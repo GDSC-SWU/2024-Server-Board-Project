@@ -17,37 +17,37 @@ public class BoardService {
 
     // 게시글 생성
     @Transactional
-    public Board createBoard(BoardRequest boardRequest) {
-        Board board = Board.builder()
-                .title(boardRequest.getTitle())
-                .content(boardRequest.getContent())
-                .build();
-        return boardRepository.save(board);
+    public Board save(BoardRequest boardRequest) {
+        return boardRepository.save(boardRequest.toEntity());
     }
 
-    // 게시글 조회
+    // 게시글 목록 조회
     @Transactional(readOnly = true)
-    public List<Board> getBoards() {
-        return boardRepository.findAll().stream().toList();
+    public List<Board> findAll() {
+        return boardRepository.findAll();
     }
     // 게시글 검색
     @Transactional(readOnly = true)
-    public List<Board> getPosts(Long search) {
-        return boardRepository.findByPostId(search);
+    public List<Board> findById(Long postId) {
+        List<Board> boards = boardRepository.findByPostId(postId);
+        if (boards.isEmpty()) {
+            throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
+        }
+        return boards;
     }
 
     // 게시글 수정
     @Transactional
-    public Board updateBoard(Long boardId, String title, String content, String imageUrl) {
-        Board board = boardRepository.findById(boardId)
+    public Board update(Long postId, String title, String content, String imageUrl) {
+        Board board = boardRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
         board.update(title, content, imageUrl);  // 엔티티 내의 update 메서드 사용
         return board;
     }
 
-    // 게시글 삭제
     @Transactional
-    public void deleteBoard(Long boardId) {
-        boardRepository.deleteById(boardId);
+    // 게시글 삭제
+    public void delete(Long postId) {
+        boardRepository.deleteById(postId);
     }
 }
