@@ -47,7 +47,7 @@ public class BoardController {
                 .body(new BoardResponse((Board) board));
     }
 
-    //게사글 삭제
+    //게시글 삭제
     @DeleteMapping("api/posts/{postId}")
     public ResponseEntity<Void> deleteBoard(@PathVariable long postId){
         boardService.delete(postId);
@@ -56,7 +56,7 @@ public class BoardController {
                 .build();
     }
 
-    //게사글 수정
+    //게시글 수정
     @PutMapping("api/posts/{postId}")
     public ResponseEntity<Board> updateBoard(@PathVariable long postId, @RequestBody UpdateBoardRequest request) {
         Board updatedBoard = boardService.update(postId, request.getTitle(), request.getContent(), request.getImageUrl());
@@ -64,6 +64,4 @@ public class BoardController {
         return ResponseEntity.ok()
                 .body(updatedBoard);
     }
-
-
 }

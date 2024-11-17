@@ -77,9 +77,25 @@ public class CommentService {
     }
 
     //댓글 수정
+    @Transactional
+    public CommentDto.CommentResponseDto updateComment(Long commentId, CommentDto.CommentRequestDto requestDto) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(()-> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+        comment.setContent(requestDto.getContent());
+        commentRepository.save(comment);
+
+        // dto로 변환 후 리턴
+        return CommentDto.CommentResponseDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .userId(comment.getUser().getUserID())
+                .postId(comment.getBoard().getPostId())
+                .build();
+    }
 
 
     //댓글 조회, dto 객체 리스트 반환
+    @Transactional
     public List<CommentDto.CommentResponseDto> findComments(Long postId) {
         // 게시글 존재 여부 확인
         Board board = boardRepository.findById(postId)
