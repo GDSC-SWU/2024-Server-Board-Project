@@ -39,6 +39,13 @@ public class User extends BaseEntity{
     @Column(name = "image")
     private String image;
 
+    @Builder
+    public User(String nickname, String email, String password, String auth) {
+        this.nickname = nickname;
+        this.email = email;
+        this.pw = password;
+    }
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
