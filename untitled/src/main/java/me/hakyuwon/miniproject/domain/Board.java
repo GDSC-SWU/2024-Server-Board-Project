@@ -29,6 +29,9 @@ public class Board extends BaseEntity{
     @Column(name = "image_url")
     private String imageUrl;  // 이미지 URL 필드 추가
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")  // user 매핑
+    private User user;
 
 
     @Builder
