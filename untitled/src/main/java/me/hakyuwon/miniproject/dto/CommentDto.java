@@ -1,5 +1,7 @@
 package me.hakyuwon.miniproject.dto;
 
+import me.hakyuwon.miniproject.domain.Board;
+import me.hakyuwon.miniproject.domain.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
