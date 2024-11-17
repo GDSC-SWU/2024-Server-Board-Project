@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.hakyuwon.miniproject.domain.Board;
 import me.hakyuwon.miniproject.domain.Comment;
 import me.hakyuwon.miniproject.domain.User;
+import me.hakyuwon.miniproject.dto.CommentDto;
 import me.hakyuwon.miniproject.repository.BoardRepository;
 import me.hakyuwon.miniproject.repository.CommentRepository;
 import me.hakyuwon.miniproject.repository.UserRepository;
@@ -11,37 +12,40 @@ import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @RequiredArgsConstructor
 @Service
 public class CommentService {
 
 
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private BoardRepository boardRepository;  // blogRepository 추가
-    @Autowired
-    private UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     //댓글 작성
     @Transactional
-    public Comment addComment(Long postId, Long userId, String content) {
-        // postId에 해당하는 Board를 찾아와서 댓글과 연결
+    public CommentDto.CommentResponseDto save(CommentDto.CommentRequestDto requestDto, Long userId, Long postId ) {
         Board board = boardRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
-        // userId에 해당하는 User를 찾아와서 댓글 작성자 설정
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        // 댓글 생성 및 게시글과 연결
+        // comment로 변환
         Comment comment = Comment.builder()
                 .board(board)
                 .user(user)
-                .content(content)
+                .content(requestDto.getContent())
                 .build();
+        commentRepository.save(comment);
 
-        return commentRepository.save(comment);
+        // dto로 변환 후 리턴
+        return CommentDto.CommentResponseDto.builder()
+                .id(comment.getId())
+                .userId(comment.getUser().getUserID())
+                .postId(comment.getBoard().getPostId())
+                .content(comment.getContent())
+                .build();
     }
 
     //대댓글 작성

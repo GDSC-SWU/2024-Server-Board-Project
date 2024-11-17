@@ -17,7 +17,7 @@ public class Comment extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id", updatable = false)
-    private Long commentId;
+    private Long id;
 
     @Column(name = "content", nullable = false)
     private String content;
