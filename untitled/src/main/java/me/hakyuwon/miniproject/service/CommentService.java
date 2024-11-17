@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import me.hakyuwon.miniproject.domain.Board;
 import me.hakyuwon.miniproject.domain.Comment;
 import me.hakyuwon.miniproject.domain.User;
-import me.hakyuwon.miniproject.dto.BoardRequest;
-import me.hakyuwon.miniproject.dto.CommentRequest;
 import me.hakyuwon.miniproject.repository.BoardRepository;
 import me.hakyuwon.miniproject.repository.CommentRepository;
 import me.hakyuwon.miniproject.repository.UserRepository;
