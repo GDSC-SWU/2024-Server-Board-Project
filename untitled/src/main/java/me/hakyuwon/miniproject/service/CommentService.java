@@ -8,7 +8,9 @@ import me.hakyuwon.miniproject.dto.CommentDto;
 import me.hakyuwon.miniproject.repository.BoardRepository;
 import me.hakyuwon.miniproject.repository.CommentRepository;
 import me.hakyuwon.miniproject.repository.UserRepository;
-import org.hibernate.mapping.List;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,14 +79,24 @@ public class CommentService {
     //댓글 수정
 
 
-    //댓글 조회
-    public List<Comment> findComments(Long postId) {
+    //댓글 조회, dto 객체 리스트 반환
+    public List<CommentDto.CommentResponseDto> findComments(Long postId) {
         // 게시글 존재 여부 확인
         Board board = boardRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
-        // 게시글에 해당하는 댓글 리스트 조회
-        return commentRepository.findByPostId(postId);
+        // 모든 댓글 조회
+        List<Comment> commentList = commentRepository.findAllByPostId(postId);
+
+        // commentList를 stream으로 변환, map으로 dto 객체로 변환
+        return commentList.stream()
+                .map(comment -> CommentDto.CommentResponseDto.builder()
+                        .id(comment.getId())
+                        .userId(comment.getUser().getUserID())
+                        .postId(comment.getBoard().getPostId())
+                        .content(comment.getContent())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Transactional

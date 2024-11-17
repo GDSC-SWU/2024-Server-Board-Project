@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum Grade {
-    A,B,C,D,manager
+    A, B, C, D, manager
 }

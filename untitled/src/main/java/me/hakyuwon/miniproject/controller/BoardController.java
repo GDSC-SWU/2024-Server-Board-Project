@@ -38,6 +38,7 @@ public class BoardController {
                 .body(board);
     }
 
+    // 특정 게시글 조회
     @GetMapping("/api/posts/{postId}")
     public ResponseEntity<BoardResponse> findBoard(@PathVariable long postId){
         List<Board> board = boardService.findById(postId);
