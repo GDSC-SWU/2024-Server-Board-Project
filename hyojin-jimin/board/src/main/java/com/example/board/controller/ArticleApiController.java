@@ -19,14 +19,14 @@ public class ArticleApiController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/api/posts/category/{category}")
-    public ResponseEntity<Article> addArticle(@PathVariable Category category, @RequestBody AddArticleRequest request, @RequestHeader("userId") Long userId) {
+    @PostMapping("/api/category/{category}/{userId}/posts")
+    public ResponseEntity<Article> addArticle(@PathVariable Category category, @RequestBody AddArticleRequest request, @PathVariable Long userId) {
         Article savedArticle = articleService.save(request, userId, category);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedArticle);
     }
 
-    @GetMapping("/api/posts/category/{category}")
+    @GetMapping("/api/category/{category}/posts")
     public ResponseEntity<List<ArticleResponse>> findAllArticlesByCategory(@PathVariable Category category) {
         List<ArticleResponse> articles = articleService.findAllByCategory(category)
                 .stream()
@@ -50,8 +50,8 @@ public class ArticleApiController {
                 .build();
     }
 
-    @PutMapping("/api/posts/{articleId}")
-    public ResponseEntity<Article> updateArticle(@PathVariable long articleId, @RequestBody UpdateArticleRequest request, @RequestHeader("userId") Long userId) {
+    @PutMapping("/api/{userId}/posts/{articleId}")
+    public ResponseEntity<Article> updateArticle(@PathVariable long articleId, @RequestBody UpdateArticleRequest request, @PathVariable Long userId) {
         Article updatedArticle = articleService.update(articleId, request, userId);
         return ResponseEntity.ok()
                 .body(updatedArticle);

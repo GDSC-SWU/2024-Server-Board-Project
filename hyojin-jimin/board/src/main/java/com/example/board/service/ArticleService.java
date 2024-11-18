@@ -36,7 +36,7 @@ public class ArticleService {
     //게시글 조회
     public Article findById(long articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("not found: " + articleId));
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
     }
 
     //게시글 삭제
@@ -48,14 +48,9 @@ public class ArticleService {
     @Transactional
     public Article update(long articleId, UpdateArticleRequest request, Long userId) {
         Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("not found: " + articleId));
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-        // 사용자 권한 검증
-        if (!article.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("수정 권한이 없습니다.");
-        }
 
         article.update(request.getTitle(), request.getContent(), request.getImagePath());
         return article;
