@@ -6,6 +6,7 @@ import me.hakyuwon.miniproject.dto.AddUserRequest;
 import me.hakyuwon.miniproject.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +28,7 @@ public class UserService {
                 .build()).getUserID();
     }
 
+    // 사용자 조회
     public User findById(Long userId){
         return userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }

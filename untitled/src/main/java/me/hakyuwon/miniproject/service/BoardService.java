@@ -26,6 +26,7 @@ public class BoardService {
     public List<Board> findAll() {
         return boardRepository.findAll();
     }
+
     // 게시글 검색
     @Transactional(readOnly = true)
     public List<Board> findById(Long postId) {
@@ -45,8 +46,8 @@ public class BoardService {
         return board;
     }
 
-    @Transactional
     // 게시글 삭제
+    @Transactional
     public void delete(Long postId) {
         boardRepository.deleteById(postId);
     }

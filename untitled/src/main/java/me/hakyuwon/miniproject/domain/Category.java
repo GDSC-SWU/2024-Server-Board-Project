@@ -27,6 +27,4 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL) // 게시글
     private List<Board> boards = new ArrayList<>();
 
-
-
 }

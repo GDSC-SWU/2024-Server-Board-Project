@@ -41,12 +41,15 @@ public class Board extends BaseEntity{
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL) // comment 매핑
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL) // like 매핑
+    private List<Like> likes;
 
     @Builder
-    public Board(String title, String content, String imageUrl) {
+    public Board(String title, String content, String imageUrl, Category category) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
+        this.category = category;
     }
 
     public void update(String title, String content, String imageUrl){

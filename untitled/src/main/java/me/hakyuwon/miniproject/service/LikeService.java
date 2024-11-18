@@ -9,6 +9,8 @@ import me.hakyuwon.miniproject.repository.BoardRepository;
 import me.hakyuwon.miniproject.repository.LikeRepository;
 import me.hakyuwon.miniproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
 
     // 좋아요 생성
+    @Transactional
     public LikeResponse addLike(Long userId, Long postId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
@@ -39,6 +42,7 @@ public class LikeService {
     }
 
     // 좋아요 삭제
+    @Transactional
     public void deleteLike(Long likeId){
         likeRepository.deleteById(likeId);
     }
