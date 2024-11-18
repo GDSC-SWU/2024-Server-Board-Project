@@ -17,11 +17,11 @@ public class Like extends BaseEntity {
     @Column(name = "like_id", updatable = false)
     private Long likeID;
 
-    @ManyToOne(fetch = FetchType.LAZY) //대댓글
+    @ManyToOne(fetch = FetchType.LAZY) // board 매핑
     @JoinColumn(name = "post_id", nullable = false)
     private Board board;
 
-    @ManyToOne(fetch = FetchType.LAZY) //대댓글
+    @ManyToOne(fetch = FetchType.LAZY) // user 매핑
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

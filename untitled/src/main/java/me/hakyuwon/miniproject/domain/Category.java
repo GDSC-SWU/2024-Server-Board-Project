@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -17,6 +20,13 @@ public class Category extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", updatable = false)
     private Long categoryId;
+
+    @Column(name = "category_name", nullable = false)
+    private String categoryName;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL) // 게시글
+    private List<Board> boards = new ArrayList<>();
+
 
 
 }

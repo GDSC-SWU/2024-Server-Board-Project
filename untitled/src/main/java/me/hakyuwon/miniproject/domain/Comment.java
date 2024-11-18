@@ -22,11 +22,11 @@ public class Comment extends BaseEntity{
     @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)  // 다대일 관계 설정
-    @JoinColumn(name = "post_id", nullable = false)  // Comment 엔티티가 Board와 연결됨을 나타냄
+    @ManyToOne(fetch = FetchType.LAZY)  // board 매핑
+    @JoinColumn(name = "post_id", nullable = false)
     private Board board;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // user 매핑
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

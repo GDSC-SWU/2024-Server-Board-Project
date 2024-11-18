@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +33,13 @@ public class Board extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")  // user 매핑
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")  // category 매핑
+    private Category category;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL) // comment 매핑
+    private List<Comment> comments;
 
 
     @Builder
