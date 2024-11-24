@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import com.example.board.domain.enums.Category;
 import com.example.board.dto.ArticleDto;
 import com.example.board.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -14,16 +15,16 @@ public class ArticleApiController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/api/posts/{category}")
+    @PostMapping("/api/posts")
     public ResponseEntity<ArticleDto.ArticleResponseDto> addArticle(
             @RequestBody ArticleDto.ArticleRequestDto request,
-            @PathVariable(name = "category") String category) {
+            @RequestParam(name = "category") Category category) {
         ArticleDto.ArticleResponseDto articleResponse = articleService.save(request, category, 1L);
         return ResponseEntity.ok().body(articleResponse);
     }
 
-    @GetMapping("/api/posts/{category}")
-    public ResponseEntity<List<ArticleDto.ArticleResponseDto>> findAllArticles(@PathVariable(name = "category") String category) {
+    @GetMapping("/api/posts")
+    public ResponseEntity<List<ArticleDto.ArticleResponseDto>> findAllArticles(@RequestParam(name = "category") Category category) {
         List<ArticleDto.ArticleResponseDto> articles = articleService.findArticles(category);
         return ResponseEntity.ok().body(articles);
     }

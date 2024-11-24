@@ -21,7 +21,7 @@ public class ArticleService {
     private final UserRepository userRepository;
 
     //게시글 추가
-    public ArticleDto.ArticleResponseDto save(ArticleDto.ArticleRequestDto request, String category, Long userId) {
+    public ArticleDto.ArticleResponseDto save(ArticleDto.ArticleRequestDto request, Category category, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
@@ -30,7 +30,7 @@ public class ArticleService {
                 .content(request.getContent())
                 .imagePath(request.getImagePath())
                 .user(user)
-                .category(Category.valueOf(category))
+                .category(category)
                 .build();
 
         articleRepository.save(article);
@@ -45,9 +45,9 @@ public class ArticleService {
     }
 
     //게시글 목록 조회
-    public List<ArticleDto.ArticleResponseDto> findArticles(String category) {
+    public List<ArticleDto.ArticleResponseDto> findArticles(Category category) {
         List<Article> articleList = articleRepository.findAllByCategory(category);
-        //최신순으로 조회
+
         return articleList.stream()
                 .map(article -> ArticleDto.ArticleResponseDto.builder()
                         .id(article.getId())
