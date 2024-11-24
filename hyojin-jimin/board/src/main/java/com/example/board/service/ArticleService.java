@@ -1,36 +1,75 @@
 package com.example.board.service;
 
+import com.example.board.domain.User;
+import com.example.board.domain.enums.Category;
+import com.example.board.dto.ArticleDto;
 import com.example.board.repository.ArticleRepository;
+import com.example.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.example.board.domain.Article;
-import com.example.board.dto.AddArticleRequest;
-import com.example.board.dto.UpdateArticleRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
     //게시글 추가
-    public Article save(AddArticleRequest request) {
-        return articleRepository.save(request.toEntity());
+    public ArticleDto.ArticleResponseDto save(ArticleDto.ArticleRequestDto request, String category, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        Article article = Article.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .imagePath(request.getImagePath())
+                .user(user)
+                .category(Category.valueOf(category))
+                .build();
+
+        articleRepository.save(article);
+
+        return ArticleDto.ArticleResponseDto.builder()
+                .id(article.getId())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .imagePath(article.getImagePath())
+                .category(article.getCategory().toString())
+                .build();
     }
 
     //게시글 목록 조회
-    public List<Article> findAll() {
+    public List<ArticleDto.ArticleResponseDto> findArticles(String category) {
+        List<Article> articleList = articleRepository.findAllByCategory(category);
         //최신순으로 조회
-        return articleRepository.findAllByOrderByCreatedAtDesc();
+        return articleList.stream()
+                .map(article -> ArticleDto.ArticleResponseDto.builder()
+                        .id(article.getId())
+                        .title(article.getTitle())
+                        .content(article.getContent())
+                        .imagePath(article.getImagePath())
+                        .category(article.getCategory().toString())
+                        .build())
+                .collect(Collectors.toList());
     }
 
-    //게시글 조회
-    public Article findById(long postId) {
-        return articleRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
+    //게시글 상세 조회
+    public ArticleDto.ArticleResponseDto findArticle(long postId) {
+        Article article = articleRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다"));
+        return ArticleDto.ArticleResponseDto.builder()
+                .id(article.getId())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .imagePath(article.getImagePath())
+                .category(article.getCategory().toString())
+                .build();
     }
 
     //게시글 삭제
@@ -40,10 +79,16 @@ public class ArticleService {
 
     //게시글 수정
     @Transactional
-    public Article update(long postId, UpdateArticleRequest request) {
+    public ArticleDto.ArticleResponseDto updateArticle(long postId, ArticleDto.ArticleRequestDto request) {
         Article article = articleRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
         article.update(request.getTitle(), request.getContent(), request.getImagePath());
-        return article;
+        return ArticleDto.ArticleResponseDto.builder()
+                .id(article.getId())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .imagePath(article.getImagePath())
+                .category(article.getCategory().toString())
+                .build();
     }
 }

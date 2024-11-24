@@ -1,12 +1,8 @@
 package com.example.board.controller;
 
-import com.example.board.dto.ArticleResponse;
-import com.example.board.dto.UpdateArticleRequest;
+import com.example.board.dto.ArticleDto;
 import com.example.board.service.ArticleService;
 import lombok.RequiredArgsConstructor;
-import com.example.board.domain.Article;
-import com.example.board.dto.AddArticleRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,41 +14,35 @@ public class ArticleApiController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/api/posts")
-    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request) {
-        Article savedArticle = articleService.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(savedArticle);
+    @PostMapping("/api/posts/{category}")
+    public ResponseEntity<ArticleDto.ArticleResponseDto> addArticle(
+            @RequestBody ArticleDto.ArticleRequestDto request,
+            @PathVariable(name = "category") String category) {
+        ArticleDto.ArticleResponseDto articleResponse = articleService.save(request, category, 1L);
+        return ResponseEntity.ok().body(articleResponse);
     }
 
-    @GetMapping("/api/posts")
-    public ResponseEntity<List<ArticleResponse>> findAllArticles() {
-        List<ArticleResponse> articles = articleService.findAll()
-                .stream()
-                .map(ArticleResponse::new)
-                .toList();
-        return ResponseEntity.ok()
-                .body(articles);
+    @GetMapping("/api/posts/{category}")
+    public ResponseEntity<List<ArticleDto.ArticleResponseDto>> findAllArticles(@PathVariable(name = "category") String category) {
+        List<ArticleDto.ArticleResponseDto> articles = articleService.findArticles(category);
+        return ResponseEntity.ok().body(articles);
     }
 
     @GetMapping("/api/posts/{postId}")
-    public ResponseEntity<ArticleResponse> findArticle(@PathVariable long postId) {
-        Article article = articleService.findById(postId);
-        return ResponseEntity.ok()
-                .body(new ArticleResponse(article));
+    public ResponseEntity<ArticleDto.ArticleResponseDto> findArticle(@PathVariable long postId) {
+        ArticleDto.ArticleResponseDto articleResponse = articleService.findArticle(postId);
+        return ResponseEntity.ok().body(articleResponse);
     }
 
     @DeleteMapping("/api/posts/{postId}")
-    public ResponseEntity<Void> deleteArticle(@PathVariable long postId) {
+    public ResponseEntity<String> deleteArticle(@PathVariable long postId) {
         articleService.delete(postId);
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok().body("삭제 되었습니다");
     }
 
     @PutMapping("/api/posts/{postId}")
-    public ResponseEntity<Article> updateArticle(@PathVariable long postId, @RequestBody UpdateArticleRequest request) {
-        Article updatedArticle = articleService.update(postId, request);
-        return ResponseEntity.ok()
-                .body(updatedArticle);
+    public ResponseEntity<ArticleDto.ArticleResponseDto> updateArticle(@PathVariable long postId, @RequestBody ArticleDto.ArticleRequestDto request) {
+        ArticleDto.ArticleResponseDto updatedArticle = articleService.updateArticle(postId, request);
+        return ResponseEntity.ok().body(updatedArticle);
     }
 }

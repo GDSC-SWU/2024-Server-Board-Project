@@ -1,16 +1,17 @@
 package com.example.board.domain;
 
+import com.example.board.domain.enums.Category;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity //엔티티
-@Getter //롬복
+@Entity
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Article extends BaseEntity{
 
     @Id //기본키
@@ -31,16 +32,14 @@ public class Article extends BaseEntity{
     @JoinColumn(name = "user_id")  // user 매핑
     private User user;
 
-    @Builder
-    public Article(String title, String content, String imagePath) {
-        this.title = title;
-        this.content = content;
-        this.imagePath = imagePath;
-    }
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     public void update(String title, String content, String imagePath) {
         this.title = title;
         this.content = content;
         this.imagePath = imagePath;
     }
+
 }
