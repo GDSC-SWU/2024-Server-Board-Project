@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import com.example.board.config.jwt.JwtUtil;
 import com.example.board.dto.CommentDto;
 import com.example.board.dto.likeDto;
 import com.example.board.service.LikeService;
@@ -13,9 +14,10 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/api/{articleId}/{userId}/like")
-    public ResponseEntity<likeDto.LikeResponseDto> addLike(@PathVariable Long articleId, @PathVariable Long userId) {
-        likeDto.LikeResponseDto likeResponseDto = likeService.addLike(userId, articleId);
+    @PostMapping("/api/{articleId}//like")
+    public ResponseEntity<likeDto.LikeResponseDto> addLike(@PathVariable Long articleId) {
+        String email = JwtUtil.getCurrentUsername();
+        likeDto.LikeResponseDto likeResponseDto = likeService.addLike(email, articleId);
         return ResponseEntity.ok(likeResponseDto);
     }
 

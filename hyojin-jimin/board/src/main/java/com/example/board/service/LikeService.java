@@ -18,8 +18,8 @@ public class LikeService {
     private final ArticleRepository articleRepository;
     private final LikeRepository likeRepository;
 
-    public likeDto.LikeResponseDto addLike(long userId, long articleId) {
-        User user = userRepository.findById(userId)
+    public likeDto.LikeResponseDto addLike(String email, long articleId) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다"));
 
         Article article = articleRepository.findById(articleId)

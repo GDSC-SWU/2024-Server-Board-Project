@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import com.example.board.config.jwt.JwtUtil;
 import com.example.board.dto.CommentDto;
 import com.example.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,11 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/api/{articleId}/{userId}/comment")
-    public ResponseEntity<CommentDto.CommentResponseDto> addComment(@PathVariable Long articleId, @PathVariable Long userId, @RequestBody CommentDto.CommentRequestDto request) {
-        CommentDto.CommentResponseDto commentResponseDto = commentService.save(request, userId, articleId);
+    @PostMapping("/api/{articleId}/comment")
+    public ResponseEntity<CommentDto.CommentResponseDto> addComment(
+            @PathVariable Long articleId, @RequestBody CommentDto.CommentRequestDto request) {
+        String email = JwtUtil.getCurrentUsername();
+        CommentDto.CommentResponseDto commentResponseDto = commentService.save(request, email, articleId);
         return ResponseEntity.ok(commentResponseDto);
     }
 

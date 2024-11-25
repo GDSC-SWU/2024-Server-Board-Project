@@ -22,11 +22,11 @@ public class CommentService {
     private final UserRepository userRepository;
 
     // 댓글 작성
-    public CommentDto.CommentResponseDto save(CommentDto.CommentRequestDto request, Long userId, Long articleId) {
+    public CommentDto.CommentResponseDto save(CommentDto.CommentRequestDto request, String email, Long articleId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         // comment로 변환
