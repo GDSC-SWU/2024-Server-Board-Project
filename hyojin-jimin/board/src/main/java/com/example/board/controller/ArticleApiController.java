@@ -15,7 +15,7 @@ public class ArticleApiController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/api/posts")
+    @PostMapping("/api/articles")
     public ResponseEntity<ArticleDto.ArticleResponseDto> addArticle(
             @RequestBody ArticleDto.ArticleRequestDto request,
             @RequestParam(name = "category") Category category) {
@@ -23,27 +23,27 @@ public class ArticleApiController {
         return ResponseEntity.ok().body(articleResponse);
     }
 
-    @GetMapping("/api/posts")
+    @GetMapping("/api/articles")
     public ResponseEntity<List<ArticleDto.ArticleResponseDto>> findAllArticles(@RequestParam(name = "category") Category category) {
         List<ArticleDto.ArticleResponseDto> articles = articleService.findArticles(category);
         return ResponseEntity.ok().body(articles);
     }
 
-    @GetMapping("/api/posts/{postId}")
-    public ResponseEntity<ArticleDto.ArticleResponseDto> findArticle(@PathVariable long postId) {
-        ArticleDto.ArticleResponseDto articleResponse = articleService.findArticle(postId);
+    @GetMapping("/api/articles/{articleId}")
+    public ResponseEntity<ArticleDto.ArticleResponseDto> findArticle(@PathVariable long articleId) {
+        ArticleDto.ArticleResponseDto articleResponse = articleService.findArticle(articleId);
         return ResponseEntity.ok().body(articleResponse);
     }
 
-    @DeleteMapping("/api/posts/{postId}")
-    public ResponseEntity<String> deleteArticle(@PathVariable long postId) {
-        articleService.delete(postId);
+    @DeleteMapping("/api/articles/{articleId}")
+    public ResponseEntity<String> deleteArticle(@PathVariable long articleId) {
+        articleService.delete(articleId);
         return ResponseEntity.ok().body("삭제 되었습니다");
     }
 
-    @PutMapping("/api/posts/{postId}")
-    public ResponseEntity<ArticleDto.ArticleResponseDto> updateArticle(@PathVariable long postId, @RequestBody ArticleDto.ArticleRequestDto request) {
-        ArticleDto.ArticleResponseDto updatedArticle = articleService.updateArticle(postId, request);
+    @PutMapping("/api/articles/{articleId}")
+    public ResponseEntity<ArticleDto.ArticleResponseDto> updateArticle(@PathVariable long articleId, @RequestBody ArticleDto.ArticleRequestDto request) {
+        ArticleDto.ArticleResponseDto updatedArticle = articleService.updateArticle(articleId, request);
         return ResponseEntity.ok().body(updatedArticle);
     }
 }
