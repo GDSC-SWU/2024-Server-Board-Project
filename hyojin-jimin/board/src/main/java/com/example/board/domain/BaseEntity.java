@@ -1,6 +1,7 @@
 package com.example.board.domain;
 
 
+import com.example.board.domain.enums.Grade;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
@@ -33,6 +34,13 @@ public abstract class BaseEntity {
         LocalDateTime now = LocalDateTime.now();
         createdAt = now;
         updatedAt = now;
+
+        if (this instanceof User) { // User 클래스일 경우 추가 로직
+            User user = (User) this;
+            if (user.getGrade() == null) {
+                user.setGrade(Grade.D); // 기본값 설정
+            }
+        }
     }
     @PreUpdate
     public void preUpdate() {

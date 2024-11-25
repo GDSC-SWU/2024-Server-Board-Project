@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
@@ -40,8 +41,8 @@ public class User extends BaseEntity implements UserDetails{
     @Column(nullable = true)
     private Integer likeCount;
 
-    @Column(nullable = true)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Grade grade;
 
     @Column(nullable = true)
@@ -59,7 +60,7 @@ public class User extends BaseEntity implements UserDetails{
     // 권한 변환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority(this.grade.name()));
     }
 
     @Override

@@ -1,6 +1,5 @@
-package com.example.board.config;
+package com.example.board.config.jwt;
 
-import com.example.board.config.jwt.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
