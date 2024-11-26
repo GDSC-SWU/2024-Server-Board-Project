@@ -5,22 +5,22 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter
-public class GradeConverter implements AttributeConverter<GradeEnum, Long> {
+public class GradeConverter implements AttributeConverter<GradeEnum, String> {
     
     // db에 저장
     @Override
-    public Long convertToDatabaseColumn(GradeEnum attribute) {
-        if(attribute == null) {
+    public String convertToDatabaseColumn(GradeEnum _attribute) {
+        if(_attribute == null) {
             return null;
         }
-        return attribute.getGradeId();
+        return _attribute.getGradeName();
     }
     // Entity로 반환
     @Override
-    public GradeEnum convertToEntityAttribute(Long dbData) {
-        if(dbData == null) {
+    public GradeEnum convertToEntityAttribute(String _dbData) {
+        if(_dbData == null) {
             return null;
         }
-        return GradeEnum.enumOf(dbData);
+        return GradeEnum.enumOf(_dbData);
     }
 }

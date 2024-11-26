@@ -17,7 +17,7 @@ public class CategoryService {
     private final CategoryConverter categoryConverter;
 
     // 카테고리 목록 조회
-    public List<CategoryDto.CategoryResponseDto> findAll() {
+    public List<CategoryDto.Response> findAll() {
         List<Category> categoryList = categoryRepository.findAll();
 
         return categoryList.stream()

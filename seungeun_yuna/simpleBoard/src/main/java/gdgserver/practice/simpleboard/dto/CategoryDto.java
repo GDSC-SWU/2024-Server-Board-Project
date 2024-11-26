@@ -7,13 +7,19 @@ import lombok.NoArgsConstructor;
 
 public class CategoryDto {
 
+    public static class Request{
+
+    }
+
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CategoryResponseDto {
+    public static class Response {
         private Long id;
         private String name;
         private String accessLevel;
     }
+
+
 }

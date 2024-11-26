@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class CategoryConverter implements Converter<CategoryDto.CategoryResponseDto, Category>{
+public class CategoryConverter implements Converter<CategoryDto.Response, Category>{
 
     @Override
-    public CategoryDto.CategoryResponseDto toDto(Category category) {
-        return CategoryDto.CategoryResponseDto.builder()
-                .id(category.getId())
-                .name(category.getCategoryName())
-                .accessLevel(category.getAccessLevel().getGradeName())
+    public CategoryDto.Response toDto(Category _category) {
+        return CategoryDto.Response.builder()
+                .id(_category.getId())
+                .name(_category.getCategoryName())
+                .accessLevel(_category.getAccessLevel().getGradeName())
                 .build();
     }
 }

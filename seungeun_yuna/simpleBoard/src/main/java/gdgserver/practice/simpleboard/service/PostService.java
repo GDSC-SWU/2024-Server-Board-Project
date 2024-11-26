@@ -25,22 +25,17 @@ public class PostService {
     private final PostConverter postConverter;
 
     // 게시글 작성
-    public PostDto.PostResponseDto save(PostDto.PostRequestDto request, Long userId, Long categoryId) {
+    public PostDto.Response save(PostDto.Request _request, Long _userId, Long _categoryId) {
 
         // id로 유저와 카테고리 찾기
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User Not Found: " + userId));
+        User user = userRepository.findById(_userId)
+                .orElseThrow(() -> new IllegalArgumentException("User Not Found: " + _userId));
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new IllegalArgumentException("Category not found: " + categoryId));
+        Category category = categoryRepository.findById(_categoryId)
+                .orElseThrow(()-> new IllegalArgumentException("Category not found: " + _categoryId));
 
-        // requestDto -> Post Entity로 변환
-        Post post = Post.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .user(user)
-                .category(category)
-                .build();
+        // requestDto -> Post Entity 로 변환
+        Post post = postConverter.toEntity(_request, user, category);
 
         // post 저장
         postRepository.save(post);
@@ -50,10 +45,10 @@ public class PostService {
     }
 
     // 카테고리 내 게시글 목록 조회
-    public List<PostDto.PostResponseDto> findPostsByCategory(Long categoryId) {
+    public List<PostDto.Response> findPostsByCategory(Long _categoryId) {
         // id로 카테고리 찾기
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new IllegalArgumentException("Category not found: " + categoryId));
+        Category category = categoryRepository.findById(_categoryId)
+                .orElseThrow(()-> new IllegalArgumentException("Category not found: " + _categoryId));
         // 카테고리로 게시글 리스트 조회
         List<Post> postList = postRepository.findAllByCategory(category);
 
@@ -64,30 +59,31 @@ public class PostService {
     }
 
     // 게시글 내용 조회
-    public PostDto.PostResponseDto findPostById(Long id) {
+    public PostDto.Response findPostById(Long _id) {
         // id로 게시글 찾기
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found: " + id));
+        Post post = postRepository.findById(_id)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found: " + _id));
 
         // Post -> responseDto 로 변환해서 반환
         return postConverter.toDto(post);
     }
 
     // 게시글 삭제
-    public void delete(Long id) {
-        // 해당 id 게시글 존재하는지 찾기
-        postRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Post not found: " + id));
-        postRepository.deleteById(id);
+    public void delete(Long _id) {
+        // 해당 _id 게시글 존재하는지 찾기
+        postRepository.findById(_id).orElseThrow(
+                ()->new IllegalArgumentException("Post not found: " + _id));
+        postRepository.deleteById(_id);
     }
 
     // 게시글 수정
     @Transactional
-    public PostDto.PostResponseDto update(Long id, PostDto.PostRequestDto request) {
+    public PostDto.Response update(Long _id, PostDto.Request _request) {
         // id로 게시글 찾기
-        Post post = postRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("Post not found: " + id));
+        Post post = postRepository.findById(_id)
+                .orElseThrow(()->new IllegalArgumentException("Post not found: " + _id));
 
-        post.update(request.getTitle(), request.getContent()); // request로 받은 값으로 게시글 수정
+        post.update(_request.getTitle(), _request.getContent()); // request로 받은 값으로 게시글 수정
 
         return postConverter.toDto(post);
     }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class PostDto {
 
     @Getter
-    public static class PostRequestDto{
+    public static class Request {
         private String title;
         private String content;
     }
@@ -17,7 +17,7 @@ public class PostDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostResponseDto{
+    public static class Response {
         private Long id;
         private Long userId;
         private String userName;
