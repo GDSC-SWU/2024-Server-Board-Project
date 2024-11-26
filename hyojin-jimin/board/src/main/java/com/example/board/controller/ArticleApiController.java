@@ -1,6 +1,5 @@
 package com.example.board.controller;
 
-import com.example.board.domain.enums.Category;
 import com.example.board.dto.ArticleResponse;
 import com.example.board.dto.UpdateArticleRequest;
 import com.example.board.service.ArticleService;
@@ -19,16 +18,16 @@ public class ArticleApiController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/api/category/{category}/{userId}/posts")
-    public ResponseEntity<Article> addArticle(@PathVariable Category category, @RequestBody AddArticleRequest request, @PathVariable Long userId) {
-        Article savedArticle = articleService.save(request, userId, category);
+    @PostMapping("/api/posts")
+    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request) {
+        Article savedArticle = articleService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedArticle);
     }
 
-    @GetMapping("/api/category/{category}/posts")
-    public ResponseEntity<List<ArticleResponse>> findAllArticlesByCategory(@PathVariable Category category) {
-        List<ArticleResponse> articles = articleService.findAllByCategory(category)
+    @GetMapping("/api/posts")
+    public ResponseEntity<List<ArticleResponse>> findAllArticles() {
+        List<ArticleResponse> articles = articleService.findAll()
                 .stream()
                 .map(ArticleResponse::new)
                 .toList();
@@ -50,9 +49,9 @@ public class ArticleApiController {
                 .build();
     }
 
-    @PutMapping("/api/{userId}/posts/{articleId}")
-    public ResponseEntity<Article> updateArticle(@PathVariable long articleId, @RequestBody UpdateArticleRequest request, @PathVariable Long userId) {
-        Article updatedArticle = articleService.update(articleId, request, userId);
+    @PutMapping("/api/posts/{articleId}")
+    public ResponseEntity<Article> updateArticle(@PathVariable long articleId, @RequestBody UpdateArticleRequest request) {
+        Article updatedArticle = articleService.update(articleId, request);
         return ResponseEntity.ok()
                 .body(updatedArticle);
     }

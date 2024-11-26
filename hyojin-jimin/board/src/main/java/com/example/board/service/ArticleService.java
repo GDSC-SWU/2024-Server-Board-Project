@@ -1,7 +1,5 @@
 package com.example.board.service;
 
-import com.example.board.domain.User;
-import com.example.board.domain.enums.Category;
 import com.example.board.repository.ArticleRepository;
 import com.example.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +19,14 @@ public class ArticleService {
     private final UserRepository userRepository;
 
     //게시글 추가
-    public Article save(AddArticleRequest request, Long userId, Category category) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        return articleRepository.save(request.toEntity(user, category));
+    public Article save(AddArticleRequest request) {
+        return articleRepository.save(request.toEntity());
     }
 
-    //카테고리별 게시글 목록 조회
-    public List<Article> findAllByCategory(Category category) {
+    //게시글 목록 조회
+    public List<Article> findAll() {
         //최신순으로 조회
-        return articleRepository.findAllByCategoryOrderByCreatedAtDesc(category);
+        return articleRepository.findAllByOrderByCreatedAtDesc();
     }
 
     //게시글 조회
@@ -46,11 +42,9 @@ public class ArticleService {
 
     //게시글 수정
     @Transactional
-    public Article update(long articleId, UpdateArticleRequest request, Long userId) {
+    public Article update(long articleId, UpdateArticleRequest request) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         article.update(request.getTitle(), request.getContent(), request.getImagePath());
         return article;

@@ -1,6 +1,5 @@
 package com.example.board.domain;
 
-import com.example.board.domain.enums.Category;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,17 +31,11 @@ public class Article extends BaseEntity{
     @JoinColumn(name = "user_id")  // user 매핑
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
-    private Category category;
-
     @Builder
-    public Article(String title, String content, String imagePath, User user, Category category) {
+    public Article(String title, String content, String imagePath) {
         this.title = title;
         this.content = content;
         this.imagePath = imagePath;
-        this.user = user;
-        this.category = category;
     }
 
     public void update(String title, String content, String imagePath) {
