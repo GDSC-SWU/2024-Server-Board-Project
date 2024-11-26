@@ -102,7 +102,7 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
         // 모든 댓글 조회
-        List<Comment> commentList = commentRepository.findAllByPostId(postId);
+        List<Comment> commentList = commentRepository.findAllByBoard(board);
 
         // commentList를 stream으로 변환, map으로 dto 객체로 변환
         return commentList.stream()
