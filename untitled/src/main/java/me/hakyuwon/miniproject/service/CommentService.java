@@ -44,7 +44,7 @@ public class CommentService {
         // dto로 변환 후 리턴
         return CommentDto.CommentResponseDto.builder()
                 .id(comment.getId())
-                .userId(comment.getUser().getUserID())
+                .userId(comment.getUser().getUserId())
                 .postId(comment.getBoard().getPostId())
                 .content(comment.getContent())
                 .build();
@@ -88,7 +88,7 @@ public class CommentService {
         return CommentDto.CommentResponseDto.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
-                .userId(comment.getUser().getUserID())
+                .userId(comment.getUser().getUserId())
                 .postId(comment.getBoard().getPostId())
                 .build();
     }
@@ -108,7 +108,7 @@ public class CommentService {
         return commentList.stream()
                 .map(comment -> CommentDto.CommentResponseDto.builder()
                         .id(comment.getId())
-                        .userId(comment.getUser().getUserID())
+                        .userId(comment.getUser().getUserId())
                         .postId(comment.getBoard().getPostId())
                         .content(comment.getContent())
                         .build())

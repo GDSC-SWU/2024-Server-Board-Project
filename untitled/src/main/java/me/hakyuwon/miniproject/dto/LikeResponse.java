@@ -16,7 +16,7 @@ public class LikeResponse {
     public static LikeResponse from(Like like){
         return new LikeResponse(
                 like.getLikeID(),
-                like.getUser().getUserID(),
+                like.getUser().getUserId(),
                 like.getBoard().getPostId()
         );
     }
