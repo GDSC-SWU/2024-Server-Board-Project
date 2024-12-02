@@ -19,10 +19,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .authorizeRequests()
-                .requestMatchers("/api/users/signup").permitAll() // 회원가입 경로는 인증 없이 허용
-                .anyRequest().authenticated()
-                .and()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/users/signup").permitAll() // 회원가입 경로는 인증 없이 허용
+                        .requestMatchers("/api/users/login").permitAll() // 로그인 경로는 인증 없이 허용
+                        .anyRequest().authenticated() // 그 외의 모든 요청은 인증 필요
+                )
                 .logout(logout->logout
                         .logoutUrl("/api/users/logout") // 로그아웃 경로
                         .logoutSuccessHandler((request, response, authentication) -> {
