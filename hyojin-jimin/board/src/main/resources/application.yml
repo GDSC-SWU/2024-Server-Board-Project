@@ -17,5 +17,16 @@ spring:
         hbm2ddl:
           auto: create
         default_batch_fetch_size: 1000${}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
 jwt:
   secret: 4418607030a3ec9c5821253b158042e8b241d6b46830325eaa4d8246b423e3f2

@@ -57,6 +57,17 @@ public class User extends BaseEntity implements UserDetails{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserLike> likes = new ArrayList<>();  // 좋아요 양방향 매핑
 
+    private String refreshToken;
+
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.refreshToken = updateRefreshToken;
+    }
+    // 사용자 이름 변경
+    public User update(String nickname) {
+        this.nickname = nickname;
+        return this;
+    }
+
     // 권한 변환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

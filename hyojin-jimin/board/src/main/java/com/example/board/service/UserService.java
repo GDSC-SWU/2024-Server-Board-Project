@@ -18,11 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public UserDto.UserSignupResponseDto signup(UserDto.UserSignupRequestDto request) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
         User newUser = User.builder()
                 .email(request.getEmail())
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
@@ -49,6 +50,11 @@ public class UserService {
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = tokenProvider.generateToken(authentication);
 
+        // 리프레시 토큰 DB 저장
+        User user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
+        user.updateRefreshToken(jwtToken.getRefreshToken());
+
         return UserDto.UserLoginResponseDto.builder()
                 .email(request.getEmail())
                 .token(jwtToken)
@@ -57,6 +63,11 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("unexpected user"));
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("unexpected user"));
     }
 
