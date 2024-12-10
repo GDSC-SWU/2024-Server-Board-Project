@@ -32,9 +32,10 @@ public class UserController {
         return ResponseEntity.ok().body(loginResponse);
     }
 
-    @GetMapping("/api/logout")
+    @PostMapping("/api/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/api/login";
+        new SecurityContextLogoutHandler().logout(request, response,
+                SecurityContextHolder.getContext().getAuthentication());
+        return "로그아웃 성공";
     }
 }
