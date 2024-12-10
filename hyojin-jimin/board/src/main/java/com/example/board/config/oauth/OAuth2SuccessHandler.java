@@ -43,17 +43,24 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         saveRefreshToken(user.getId(), jwtToken.getRefreshToken());
         addRefreshTokenToCookie(request, response, jwtToken.getRefreshToken());
 
-        String targetUrl = getTargetUrl(jwtToken.getAccessToken());
+        // JSON 응답
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"accessToken\": \"" + jwtToken.getAccessToken() + "\", \"redirectUrl\": \"" + REDIRECT_PATH + "\"}");
 
-        clearAuthenticationAttributes(request, response);
-
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+//        String targetUrl = getTargetUrl(jwtToken.getAccessToken());
+//
+//        clearAuthenticationAttributes(request, response);
+//
+//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
+    @Transactional
     public void saveRefreshToken(Long userId, String newRefreshToken) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("unexpected User"));
         user.updateRefreshToken(newRefreshToken);
+        userRepository.save(user);
     }
 
     private void addRefreshTokenToCookie(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
